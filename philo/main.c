@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:41:59 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 21:18:21 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:02:49 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 {
 	t_table	table;
 
-	if (check_invitations_details(argc, argv + 1))
+	if (check_invitations_details(argc, argv))
 	{
 		set_table(&table, argv);
 		welcome_philosophers(&table);

@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 22:08:46 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:03:44 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE true
+#  define DEBUG_MODE false
 # endif
 # define DEFAULT_PAUSE 100
+# define MAX_PHILOS 250
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
@@ -80,8 +81,10 @@ enum				e_status
 /*-------------invitations.c--------------*/
 
 bool	check_invitations_details(int argc, char **argv);
+bool	is_valid_argument_number(int argc);
 bool	is_valid_string(char *argv);
 bool	is_valid_range(char *argv);
+bool	within_philo_limit(char *argv);
 
 /*----------------table.c-----------------*/
 
