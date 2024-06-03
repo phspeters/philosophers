@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/31 16:03:44 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:14:43 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <sys/time.h>
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE false
+#  define DEBUG_MODE 0
 # endif
 # define DEFAULT_PAUSE 100
 # define MAX_PHILOS 250
