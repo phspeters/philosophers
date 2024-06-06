@@ -6,27 +6,27 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:59:48 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 21:19:09 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:17:39 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	safe_get(pthread_mutex_t *mutex, size_t *value)
+size_t	safe_get(sem_t *semaphore, size_t *value)
 {
 	size_t	get_value;
 
-	pthread_mutex_lock(mutex);
+	sem_wait(semaphore);
 	get_value = *value;
-	pthread_mutex_unlock(mutex);
+	sem_post(semaphore);
 	return (get_value);
 }
 
-void	safe_set(pthread_mutex_t *mutex, size_t *value, size_t new_value)
+void	safe_set(sem_t *semaphore, size_t *value, size_t new_value)
 {
-	pthread_mutex_lock(mutex);
+	sem_wait(semaphore);
 	*value = new_value;
-	pthread_mutex_unlock(mutex);
+	sem_post(semaphore);
 }
 
 void	safe_print_status(t_philo *philo, t_status status)
@@ -34,14 +34,12 @@ void	safe_print_status(t_philo *philo, t_status status)
 	t_table	*table;
 
 	table = philo->table;
-	if (is_dinner_over(table))
-		return ;
-	pthread_mutex_lock(&table->print_mutex);
+	sem_wait(table->print_turn);
 	if (DEBUG_MODE == true)
 		print_debug(philo, status);
 	else
 		print_status(philo, status);
-	pthread_mutex_unlock(&table->print_mutex);
+	sem_post(table->print_turn);
 }
 
 void	print_debug(t_philo *philo, t_status status)
@@ -62,13 +60,11 @@ void	print_debug(t_philo *philo, t_status status)
 		printf("%zu %zu is sleeping\n", timestamp(table->dinner_start_time),
 			philo->id);
 	else if (status == GRABBED_FIRST_FORK)
-		printf("%zu %zu has taken his first fork [%zu]\n",
-			timestamp(table->dinner_start_time), philo->id,
-			philo->first_fork->id);
+		printf("%zu %zu has taken his first fork\n",
+			timestamp(table->dinner_start_time), philo->id);
 	else if (status == GRABBED_SECOND_FORK)
-		printf("%zu %zu has taken his second fork [%zu]\n",
-			timestamp(table->dinner_start_time), philo->id,
-			philo->second_fork->id);
+		printf("%zu %zu has taken his second fork\n",
+			timestamp(table->dinner_start_time), philo->id);
 	else if (status == EVERYONE_FULL)
 		printf("All philosophers are full\n");
 }
@@ -78,8 +74,6 @@ void	print_status(t_philo *philo, t_status status)
 	t_table	*table;
 
 	table = philo->table;
-	if (is_dinner_over(table))
-		return ;
 	if (status == DEAD)
 		printf("%zu %zu died\n", timestamp(table->dinner_start_time),
 			philo->id);

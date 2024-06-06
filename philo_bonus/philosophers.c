@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:18 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 22:04:53 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:18:17 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,7 @@ void	think(t_philo *philo)
 		return ;
 	if (thinking_time > 500)
 		thinking_time = 500;
-	else
-	{
-		while ((time_t)get_time_in_ms() < thinking_time)
-		{
-			if (is_dinner_over(table))
-				break ;
-			usleep(DEFAULT_PAUSE);
-		}
-	}
+	usleep(thinking_time * 1000);
 }
 
 void	eat(t_philo *philo)
@@ -44,46 +36,33 @@ void	eat(t_philo *philo)
 	table = philo->table;
 	grab_forks(philo);
 	safe_print_status(philo, EATING);
-	safe_set(&philo->philo_mutex, &philo->last_meal_time, get_time_in_ms());
-	while (get_time_in_ms() < safe_get(&philo->philo_mutex,
-			&philo->last_meal_time) + table->time_to_eat)
-	{
-		if (is_dinner_over(table))
-			break ;
-		usleep(DEFAULT_PAUSE);
-	}
+	safe_set(philo->philo_turn, &philo->last_meal_time, get_time_in_ms());
+	usleep(philo->table->time_to_eat * 1000);
 	release_forks(philo);
 	philo->meals_eaten++;
 	if (philo->meals_eaten == table->meals_to_fullfil)
-		philo->is_full = true;
+		sem_post(table->philo_is_full);
 }
 
 void	grab_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->first_fork->fork_mutex);
+	sem_wait(philo->table->forks);
 	safe_print_status(philo, GRABBED_FIRST_FORK);
-	pthread_mutex_lock(&philo->second_fork->fork_mutex);
+	sem_wait(philo->table->forks);
 	safe_print_status(philo, GRABBED_SECOND_FORK);
 }
 
 void	release_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-	pthread_mutex_unlock(&philo->second_fork->fork_mutex);
+	sem_post(philo->table->forks);
+	sem_post(philo->table->forks);
 }
 
 void	rest(t_philo *philo)
 {
-	size_t	wakeup_time;
 	t_table	*table;
 
 	table = philo->table;
 	safe_print_status(philo, SLEEPING);
-	wakeup_time = get_time_in_ms() + table->time_to_sleep;
-	while (get_time_in_ms() < wakeup_time)
-	{
-		if (is_dinner_over(table))
-			break ;
-		usleep(DEFAULT_PAUSE);
-	}
+	usleep(table->time_to_sleep * 1000);
 }

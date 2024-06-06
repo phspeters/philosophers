@@ -6,7 +6,7 @@
 #    By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 19:11:03 by pehenri2          #+#    #+#              #
-#    Updated: 2024/06/03 15:47:24 by pehenri2         ###   ########.fr        #
+#    Updated: 2024/06/05 21:24:27 by pehenri2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ FILES				= 	main.c \
 						table.c \
 						philosophers.c \
 						dinner.c \
+						waiter.c \
 						host.c \
 						time.c \
 						rules.c

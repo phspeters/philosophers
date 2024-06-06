@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 20:39:05 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:16:27 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	set_table(t_table *table, char **argv)
 {
-	size_t	pos;
-
 	table->philo_count = string_to_size_t(argv[1]);
 	table->time_to_die = string_to_size_t(argv[2]);
 	table->time_to_eat = string_to_size_t(argv[3]);
@@ -24,18 +22,15 @@ void	set_table(t_table *table, char **argv)
 		table->meals_to_fullfil = string_to_size_t(argv[5]);
 	else
 		table->meals_to_fullfil = -1;
-	table->dinner_is_over = false;
-	table->forks = malloc(sizeof(t_fork) * table->philo_count);
-	table->philos = malloc(sizeof(t_philo) * table->philo_count);
-	pthread_mutex_init(&table->table_mutex, NULL);
-	pthread_mutex_init(&table->print_mutex, NULL);
-	pos = 0;
-	while (pos < table->philo_count)
-	{
-		table->forks[pos].id = pos + 1;
-		pthread_mutex_init(&table->forks[pos].fork_mutex, NULL);
-		pos++;
-	}
+	table->someone_died = start_semaphore("/someone_died", 0);
+	table->philo_is_full = start_semaphore("/philo_is_full", 0);
+	table->print_turn = start_semaphore("/print_turn", 1);
+	table->forks = start_semaphore("/forks", table->philo_count);
+	table->philo = malloc(sizeof(t_philo));
+	table->philo->id = 0;
+	table->philo->meals_eaten = 0;
+	table->philo->table = table;
+	table->pids = malloc(sizeof(pid_t) * table->philo_count);
 }
 
 size_t	string_to_size_t(const char *str)
@@ -51,61 +46,23 @@ size_t	string_to_size_t(const char *str)
 	return (result);
 }
 
-void	welcome_philosophers(t_table *table)
+sem_t	*start_semaphore(char *name, size_t value)
 {
-	size_t	pos;
+	sem_t	*semaphore;
 
-	pos = 0;
-	while (pos < table->philo_count)
-	{
-		table->philos[pos].id = pos + 1;
-		table->philos[pos].meals_eaten = 0;
-		table->philos[pos].is_full = false;
-		table->philos[pos].table = table;
-		assign_forks(table, pos);
-		pthread_mutex_init(&table->philos[pos].philo_mutex, NULL);
-		pos++;
-	}
-}
-
-/**
- * @brief Function to assign the fork order to the philosopher. This function
- * is important to avoid deadlocks by creating contention between the
- * philosophers.
- * Even philosophers will pick the left fork first and then the right fork.
- * Odd philosophers will pick the right fork first and then the left fork.
- * 
- * @param table Pointer to the table struct
- * @param philo_pos Position of the philosopher in the table 
- */
-void	assign_forks(t_table *table, size_t philo_pos)
-{
-	if (philo_pos % 2 == 0)
-	{
-		table->philos[philo_pos].first_fork = &table->forks[philo_pos];
-		table->philos[philo_pos].second_fork = &table->forks[(philo_pos + 1)
-			% table->philo_count];
-	}
-	else
-	{
-		table->philos[philo_pos].first_fork = &table->forks[(philo_pos + 1)
-			% table->philo_count];
-		table->philos[philo_pos].second_fork = &table->forks[philo_pos];
-	}
+	sem_unlink(name);
+	semaphore = sem_open(name, O_CREAT, S_IRUSR | S_IWUSR, value);
+	sem_unlink(name);
+	return (semaphore);
 }
 
 void	clean_the_table(t_table *table)
 {
-	size_t	pos;
-
-	pos = 0;
-	while (pos < table->philo_count)
-	{
-		pthread_mutex_destroy(&table->forks[pos].fork_mutex);
-		pos++;
-	}
-	free(table->forks);
-	free(table->philos);
-	pthread_mutex_destroy(&table->table_mutex);
-	pthread_mutex_destroy(&table->print_mutex);
+	sem_close(table->someone_died);
+	sem_close(table->philo_is_full);
+	sem_close(table->print_turn);
+	sem_close(table->forks);
+	sem_close(table->philo->philo_turn);
+	free(table->philo);
+	free(table->pids);
 }

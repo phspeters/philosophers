@@ -6,18 +6,21 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/03 16:48:54 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:25:22 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <fcntl.h>
+# include <pthread.h>
 # include <semaphore.h>
 # include <signal.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/time.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -40,23 +43,21 @@ struct s_table
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			meals_to_fullfil;
-	size_t			all_philos_ready;
 	size_t			dinner_start_time;
-	size_t			dinner_is_over;
-	sem_t			table_semaphore;
-	sem_t			print_semaphore;
-	sem_t			forks;
-	t_philo			*philos;
+	sem_t			*someone_died;
+	sem_t			*philo_is_full;
+	sem_t			*print_turn;
+	sem_t			*forks;
+	t_philo			*philo;
+	pid_t			*pids;
 };
 
 struct s_philo
 {
 	size_t			id;
-	pid_t			pid;
-	sem_t			philo_semaphore;
 	size_t			last_meal_time;
 	size_t			meals_eaten;
-	size_t			is_full;
+	sem_t			*philo_turn;
 	t_table			*table;
 };
 
@@ -83,8 +84,7 @@ bool	within_philo_limit(char *argv);
 
 void	set_table(t_table *table, char **argv);
 size_t	string_to_size_t(const char *str);
-void	welcome_philosophers(t_table *table);
-void	assign_forks(t_table *table, size_t philo_pos);
+sem_t	*start_semaphore(char *name, size_t value);
 void	clean_the_table(t_table *table);
 
 /*-------------philosophers.c-------------*/
@@ -101,13 +101,20 @@ void	start_dinner(t_table *table);
 void	sit_philosophers(t_table *table);
 void	*lone_diner(void *data);
 void	*dinner_routine(void *data);
-void	wait_for_all_philos_to_sit(t_table *table);
+bool	is_dinner_over(void);
+
+/*----------------waiter.c----------------*/
+
+void	assign_waiter(t_philo *philo);
+void	*check_on_philosopher(void *data);
 
 /*-----------------host.c-----------------*/
 
-void	check_on_philosophers(t_table *table);
+void	manage_waiters(t_table *table);
+void	wait_for_dinner_to_end(void);
+void	*share_death_report(void *data);
+void	*share_fullness_report(void *data);
 void	escort_philosophers(t_table *table);
-bool	is_dinner_over(t_table *table);
 
 /*-----------------time.c-----------------*/
 
@@ -116,8 +123,8 @@ size_t	timestamp(size_t start_time);
 
 /*----------------rules.c-----------------*/
 
-size_t	safe_get(pthread_mutex_t *mutex, size_t *value);
-void	safe_set(pthread_mutex_t *mutex, size_t *value, size_t new_value);
+size_t	safe_get(sem_t *semaphore, size_t *value);
+void	safe_set(sem_t *semaphore, size_t *value, size_t new_value);
 void	safe_print_status(t_philo *philo, t_status status);
 void	print_debug(t_philo *philo, t_status status);
 void	print_status(t_philo *philo, t_status status);

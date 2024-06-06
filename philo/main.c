@@ -6,12 +6,14 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:41:59 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/31 16:02:49 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 18:19:19 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// iniciar monitoramento antes do start dinner ou entao criar todos os philos
+// e iniciar o cronometro logo antes de ligar a flag de todos sentados
 /*
  * argv[1] = number_of_philosophers
  * argv[2] = time_to_die -> time to spend without eating

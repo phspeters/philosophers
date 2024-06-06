@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 22:01:43 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/05 21:27:03 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,55 @@
 void	start_dinner(t_table *table)
 {
 	if (table->meals_to_fullfil == 0)
-		safe_set(&table->table_mutex, &table->dinner_is_over, true);
+		return ;
 	else
 		sit_philosophers(table);
 }
 
 void	sit_philosophers(t_table *table)
 {
-	size_t	pos;
+	size_t	i;
 
-	pos = 0;
+	i = 0;
+	table->dinner_start_time = get_time_in_ms();
+	table->philo->last_meal_time = table->dinner_start_time;
 	if (table->philo_count == 1)
-		pthread_create(&table->philos[0].thread_id, NULL, lone_diner,
-			&table->philos[0]);
+	{
+		table->philo->id = i + 1;
+		table->philo->philo_turn = start_semaphore("/philo_turn", 1);
+		assign_waiter(table->philo);
+		lone_diner(&table->philo);
+	}
 	else
 	{
-		table->dinner_start_time = get_time_in_ms();
-		while (pos < table->philo_count)
+		while (i < table->philo_count)
 		{
-			pthread_create(&table->philos[pos].thread_id, NULL, dinner_routine,
-				&table->philos[pos]);
-			pos++;
+			table->pids[i] = fork();
+			if (table->pids[i] == 0)
+			{
+				table->philo->id = i + 1;
+				table->philo->philo_turn = start_semaphore("/philo_turn", 1);
+				assign_waiter(table->philo);
+				dinner_routine(&table->philo);
+			}
+			i++;
 		}
 	}
-	safe_set(&table->table_mutex, &table->all_philos_ready, true);
 }
 
 void	*lone_diner(void *data)
 {
 	t_philo	*philo;
 	t_table	*table;
+	bool	wait_for_the_inevitable_embrace_of_death;
 
 	philo = (t_philo *)data;
 	table = philo->table;
 	table->dinner_start_time = get_time_in_ms();
-	safe_set(&philo->philo_mutex, &philo->last_meal_time,
-		table->dinner_start_time);
-	pthread_mutex_lock(&philo->first_fork->fork_mutex);
+	sem_wait(philo->table->forks);
 	safe_print_status(philo, GRABBED_FIRST_FORK);
-	pthread_mutex_unlock(&philo->first_fork->fork_mutex);
-	while (!is_dinner_over(table))
+	wait_for_the_inevitable_embrace_of_death = true;
+	while (wait_for_the_inevitable_embrace_of_death)
 		;
 	return (NULL);
 }
@@ -62,14 +71,9 @@ void	*lone_diner(void *data)
 void	*dinner_routine(void *data)
 {
 	t_philo	*philo;
-	t_table	*table;
 
 	philo = (t_philo *)data;
-	table = philo->table;
-	wait_for_all_philos_to_sit(table);
-	safe_set(&philo->philo_mutex, &philo->last_meal_time,
-		table->dinner_start_time);
-	while (!is_dinner_over(table))
+	while (true)
 	{
 		eat(philo);
 		rest(philo);
@@ -78,8 +82,12 @@ void	*dinner_routine(void *data)
 	return (NULL);
 }
 
-void	wait_for_all_philos_to_sit(t_table *table)
+bool	is_dinner_over(void)
 {
-	while (!safe_get(&table->table_mutex, &table->all_philos_ready))
-		;
+	bool	answer;
+
+	answer = false;
+	if (waitpid(-1, NULL, WNOHANG) == -1)
+		answer = true;
+	return (answer);
 }
