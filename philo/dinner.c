@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 19:12:26 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:04:19 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	*dinner_routine(void *data)
 
 	philo = (t_philo *)data;
 	table = philo->table;
-	//wait_for_all_philos_to_sit(table);
 	safe_set(&philo->philo_mutex, &philo->last_meal_time,
 		table->dinner_start_time);
 	while (!is_dinner_over(table))

@@ -6,14 +6,14 @@
 #    By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 19:11:03 by pehenri2          #+#    #+#              #
-#    Updated: 2024/06/05 21:24:27 by pehenri2         ###   ########.fr        #
+#    Updated: 2024/06/06 16:10:48 by pehenri2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME				=	philo_bonus
 CC					=	cc
-CFLAGS				=	-Wextra -Wall -Werror -Wunreachable-code -g3 -fsanitize=thread -pthread
+CFLAGS				=	-Wextra -Wall -Werror -Wunreachable-code -g3 -pthread -fsanitize=thread
 HEADERS				=	-I .
 FILES				= 	main.c \
 						invitations.c \

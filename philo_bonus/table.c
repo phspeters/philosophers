@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 21:16:27 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:41:38 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	clean_the_table(t_table *table)
 	sem_close(table->philo_is_full);
 	sem_close(table->print_turn);
 	sem_close(table->forks);
-	sem_close(table->philo->philo_turn);
 	free(table->philo);
 	free(table->pids);
 }

@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:58:44 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 21:23:59 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:44:41 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	*share_fullness_report(void *data)
 	if (!is_dinner_over())
 	{
 		escort_philosophers(table);
+		safe_print_status(table->philo, EVERYONE_FULL);
 		sem_post(table->someone_died);
 	}
 	return (NULL);

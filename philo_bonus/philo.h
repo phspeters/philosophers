@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 21:25:22 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:00:30 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE 0
+#  define DEBUG_MODE 1
 # endif
 # define DEFAULT_PAUSE 100
 # define MAX_PHILOS 250
@@ -99,8 +99,8 @@ void	rest(t_philo *philo);
 
 void	start_dinner(t_table *table);
 void	sit_philosophers(t_table *table);
-void	*lone_diner(void *data);
-void	*dinner_routine(void *data);
+void	lone_diner(t_philo *philo, size_t counter);
+void	dinner_routine(t_philo *philo, size_t counter);
 bool	is_dinner_over(void);
 
 /*----------------waiter.c----------------*/
