@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/06 16:00:30 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:21:59 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
+
+// https://nafuka11.github.io/philosophers-visualizer/
 
 # include <fcntl.h>
 # include <pthread.h>
@@ -28,8 +30,15 @@
 # ifndef DEBUG_MODE
 #  define DEBUG_MODE 1
 # endif
-# define DEFAULT_PAUSE 100
-# define MAX_PHILOS 250
+# define MAX_PHILOS 200
+
+# define BLU "\033[0;34m"
+# define GRN "\033[0;32m"
+# define CYN "\033[0;36m"
+# define YEL "\033[0;33m"
+# define RED "\033[0;31m"
+# define MAG "\033[0;35m"
+# define RST "\033[0m"
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
@@ -44,12 +53,14 @@ struct s_table
 	size_t			time_to_sleep;
 	size_t			meals_to_fullfil;
 	size_t			dinner_start_time;
-	sem_t			*someone_died;
-	sem_t			*philo_is_full;
-	sem_t			*print_turn;
+	size_t			is_dinner_over;
+	sem_t			*dinner_over_sem;
+	sem_t			*someone_died_sem;
+	sem_t			*philo_is_full_sem;
 	sem_t			*forks;
 	t_philo			*philo;
 	pid_t			*pids;
+	pthread_t		*reports;
 };
 
 struct s_philo
@@ -57,7 +68,7 @@ struct s_philo
 	size_t			id;
 	size_t			last_meal_time;
 	size_t			meals_eaten;
-	sem_t			*philo_turn;
+	sem_t			*meal_time_sem;
 	t_table			*table;
 };
 
@@ -69,6 +80,7 @@ enum				e_status
 	SLEEPING,
 	GRABBED_FIRST_FORK,
 	GRABBED_SECOND_FORK,
+	PHILO_FULL,
 	EVERYONE_FULL,
 };
 
@@ -101,7 +113,7 @@ void	start_dinner(t_table *table);
 void	sit_philosophers(t_table *table);
 void	lone_diner(t_philo *philo, size_t counter);
 void	dinner_routine(t_philo *philo, size_t counter);
-bool	is_dinner_over(void);
+size_t	is_dinner_over(t_table *table);
 
 /*----------------waiter.c----------------*/
 
@@ -111,7 +123,7 @@ void	*check_on_philosopher(void *data);
 /*-----------------host.c-----------------*/
 
 void	manage_waiters(t_table *table);
-void	wait_for_dinner_to_end(void);
+void	wait_for_dinner_to_end(t_table *table);
 void	*share_death_report(void *data);
 void	*share_fullness_report(void *data);
 void	escort_philosophers(t_table *table);

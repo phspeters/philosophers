@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:18 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/03 16:18:16 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:15:45 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	eat(t_philo *philo)
 	release_forks(philo);
 	philo->meals_eaten++;
 	if (philo->meals_eaten == table->meals_to_fullfil)
+	{
+		safe_print_status(philo, PHILO_FULL);
 		safe_set(&philo->philo_mutex, &philo->is_full, true);
+	}
 }
 
 void	grab_forks(t_philo *philo)

@@ -6,11 +6,11 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:03:26 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/31 16:05:23 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 bool	check_invitations_details(int argc, char **argv)
 {

@@ -6,11 +6,11 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 07:55:14 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 21:48:28 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 size_t	get_time_in_ms(void)
 {

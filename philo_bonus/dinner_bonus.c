@@ -6,11 +6,11 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/06 16:01:16 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	start_dinner(t_table *table)
 {
@@ -28,7 +28,11 @@ void	sit_philosophers(t_table *table)
 	table->dinner_start_time = get_time_in_ms();
 	table->philo->last_meal_time = table->dinner_start_time;
 	if (table->philo_count == 1)
-		lone_diner(table->philo, philo_counter);
+	{
+		table->pids[philo_counter] = fork();
+		if (table->pids[philo_counter] == 0)
+			lone_diner(table->philo, philo_counter);
+	}
 	else
 	{
 		while (philo_counter < table->philo_count)
@@ -48,7 +52,7 @@ void	lone_diner(t_philo	*philo, size_t counter)
 
 	table = philo->table;
 	philo->id = counter + 1;
-	philo->philo_turn = start_semaphore("/philo_turn", 1);
+	philo->meal_time_sem = start_semaphore("/meal_time_sem", 1);
 	assign_waiter(philo);
 	table->dinner_start_time = get_time_in_ms();
 	sem_wait(table->forks);
@@ -61,7 +65,7 @@ void	lone_diner(t_philo	*philo, size_t counter)
 void	dinner_routine(t_philo	*philo, size_t counter)
 {
 	philo->id = counter + 1;
-	philo->philo_turn = start_semaphore("/philo_turn", 1);
+	philo->meal_time_sem = start_semaphore("/meal_time_sem", 1);
 	assign_waiter(philo);
 	while (true)
 	{
@@ -71,12 +75,7 @@ void	dinner_routine(t_philo	*philo, size_t counter)
 	}
 }
 
-bool	is_dinner_over(void)
+size_t	is_dinner_over(t_table *table)
 {
-	bool	answer;
-
-	answer = false;
-	if (waitpid(-1, NULL, WNOHANG) == -1)
-		answer = true;
-	return (answer);
+	return (safe_get(table->dinner_over_sem, &table->is_dinner_over));
 }

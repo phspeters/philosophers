@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/05/30 20:39:05 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:21:52 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	set_table(t_table *table, char **argv)
 	table->forks = malloc(sizeof(t_fork) * table->philo_count);
 	table->philos = malloc(sizeof(t_philo) * table->philo_count);
 	pthread_mutex_init(&table->table_mutex, NULL);
-	pthread_mutex_init(&table->print_mutex, NULL);
 	pos = 0;
 	while (pos < table->philo_count)
 	{
@@ -107,5 +106,4 @@ void	clean_the_table(t_table *table)
 	free(table->forks);
 	free(table->philos);
 	pthread_mutex_destroy(&table->table_mutex);
-	pthread_mutex_destroy(&table->print_mutex);
 }

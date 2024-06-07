@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/06 16:04:19 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 16:41:04 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	sit_philosophers(t_table *table)
 	{
 		while (pos < table->philo_count)
 		{
+			safe_set(&table->philos[pos].philo_mutex,
+				&table->philos[pos].last_meal_time, table->dinner_start_time);
 			pthread_create(&table->philos[pos].thread_id, NULL, dinner_routine,
 				&table->philos[pos]);
 			pos++;
@@ -65,8 +67,6 @@ void	*dinner_routine(void *data)
 
 	philo = (t_philo *)data;
 	table = philo->table;
-	safe_set(&philo->philo_mutex, &philo->last_meal_time,
-		table->dinner_start_time);
 	while (!is_dinner_over(table))
 	{
 		eat(philo);

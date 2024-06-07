@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   philosophers_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:18 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 21:18:17 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:51:52 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	think(t_philo *philo)
 {
@@ -35,13 +35,16 @@ void	eat(t_philo *philo)
 
 	table = philo->table;
 	grab_forks(philo);
+	safe_set(philo->meal_time_sem, &philo->last_meal_time, get_time_in_ms());
+	philo->meals_eaten++;
 	safe_print_status(philo, EATING);
-	safe_set(philo->philo_turn, &philo->last_meal_time, get_time_in_ms());
 	usleep(philo->table->time_to_eat * 1000);
 	release_forks(philo);
-	philo->meals_eaten++;
 	if (philo->meals_eaten == table->meals_to_fullfil)
-		sem_post(table->philo_is_full);
+	{
+		sem_post(table->philo_is_full_sem);
+		safe_print_status(philo, PHILO_FULL);
+	}
 }
 
 void	grab_forks(t_philo *philo)

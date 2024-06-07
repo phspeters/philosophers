@@ -6,7 +6,7 @@
 #    By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 19:11:03 by pehenri2          #+#    #+#              #
-#    Updated: 2024/06/03 16:02:36 by pehenri2         ###   ########.fr        #
+#    Updated: 2024/06/07 18:24:43 by pehenri2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,14 +53,26 @@ norm:
 
 val: all
 	valgrind \
-		--tool=helgrind \
-		--history-level=none \
-		./$(NAME) 5 1800 200 200
-#		--leak-check=full \
-#		--show-leak-kinds=all \
-#		--track-origins=yes \
-#		--trace-children=yes \
-#		--tool=drd	
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--track-origins=yes \
+		--trace-children=yes \
+		./$(NAME) 5 10000 200 200 5
 #       --log-file=valgrind-out.txt \
 
-.PHONY: all, clean, fclean, re, norm, val
+hel: all
+	valgrind \
+		--tool=helgrind \
+		--history-level=none \
+		-s \
+		./$(NAME) 5 1800 200 200 5
+#       --log-file=helgrind-out.txt \
+
+drd: all
+	valgrind \
+		--tool=drd \
+		-s \
+		./$(NAME) 5 1800 200 200 5
+#       --log-file=drd-out.txt \
+
+.PHONY: all, clean, fclean, re, norm, val, hel, drd

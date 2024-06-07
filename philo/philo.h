@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/03 16:14:43 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 18:21:39 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,18 @@
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE 0
+#  define DEBUG_MODE 1
 # endif
 # define DEFAULT_PAUSE 100
-# define MAX_PHILOS 250
+# define MAX_PHILOS 200
+
+# define BLU "\033[0;34m"
+# define GRN "\033[0;32m"
+# define CYN "\033[0;36m"
+# define YEL "\033[0;33m"
+# define RED "\033[0;31m"
+# define MAG "\033[0;35m"
+# define RST "\033[0m"
 
 typedef struct s_fork	t_fork;
 typedef struct s_philo	t_philo;
@@ -42,7 +50,6 @@ struct s_table
 	size_t			dinner_start_time;
 	size_t			dinner_is_over;
 	pthread_mutex_t	table_mutex;
-	pthread_mutex_t	print_mutex;
 	t_fork			*forks;
 	t_philo			*philos;
 };
@@ -74,6 +81,7 @@ enum				e_status
 	SLEEPING,
 	GRABBED_FIRST_FORK,
 	GRABBED_SECOND_FORK,
+	PHILO_FULL,
 	EVERYONE_FULL,
 };
 

@@ -6,11 +6,11 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:41:59 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/05 21:26:55 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 /*
  * argv[1] = number_of_philosophers
@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 		set_table(&table, argv);
 		manage_waiters(&table);
 		start_dinner(&table);
-		wait_for_dinner_to_end();
+		wait_for_dinner_to_end(&table);
 		clean_the_table(&table);
 		return (EXIT_SUCCESS);
 	}
