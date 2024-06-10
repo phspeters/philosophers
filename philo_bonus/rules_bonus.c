@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:59:48 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:22:29 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:02:48 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,39 @@ void	safe_print_status(t_philo *philo, t_status status)
 {
 	if (is_dinner_over(philo->table))
 		return ;
+	sem_wait(philo->table->print_sem);
 	if (DEBUG_MODE == true)
 		print_debug(philo, status);
 	else
 		print_status(philo, status);
+	sem_post(philo->table->print_sem);
 }
 
 void	print_debug(t_philo *philo, t_status status)
 {
 	if (status == DEAD)
-		printf(RED "%zu %zu died\n" RST,
+		printf(RED "%zu %zu died" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == THINKING)
-		printf(CYN "%zu %zu is thinking\n" RST,
+		printf(CYN "%zu %zu is thinking" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == EATING)
-		printf(GRN "%zu %zu is eating for the [%zu] time\n" RST,
+		printf(GRN "%zu %zu is eating for the [%zu] time" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id,
 			philo->meals_eaten);
 	else if (status == SLEEPING)
-		printf(YEL "%zu %zu is sleeping\n" RST,
+		printf(YEL "%zu %zu is sleeping" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == GRABBED_FIRST_FORK)
-		printf(BLU "%zu %zu has taken his first fork\n" RST,
+		printf(BLU "%zu %zu has taken his first fork" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == GRABBED_SECOND_FORK)
-		printf(BLU "%zu %zu has taken his second fork\n" RST,
+		printf(BLU "%zu %zu has taken his second fork" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == PHILO_FULL)
-		printf(MAG "[%zu] is full\n" RST, philo->id);
+		printf(MAG "[%zu] is full" RST "\n", philo->id);
 	else if (status == EVERYONE_FULL)
-		printf(MAG "All philosophers are full\n" RST);
+		printf(MAG "All philosophers are full" RST "\n");
 }
 
 void	print_status(t_philo *philo, t_status status)

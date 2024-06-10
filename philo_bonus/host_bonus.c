@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:58:44 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:02:38 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:58:13 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ void	*share_fullness_report(void *data)
 	return (NULL);
 }
 
-// mudar logica para dar post num semaforo até philo count para indicar
-// o fim do role e cada philo dar free e exit para evitar leaks?
 void	escort_philosophers(t_table *table)
 {
 	size_t	pos;

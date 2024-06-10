@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:21:59 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:05:25 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE 1
+#  define DEBUG_MODE 0
 # endif
 # define MAX_PHILOS 200
 
@@ -57,6 +57,7 @@ struct s_table
 	sem_t			*dinner_over_sem;
 	sem_t			*someone_died_sem;
 	sem_t			*philo_is_full_sem;
+	sem_t			*print_sem;
 	sem_t			*forks;
 	t_philo			*philo;
 	pid_t			*pids;

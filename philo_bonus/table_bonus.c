@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:22:14 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:56:14 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	set_table(t_table *table, char **argv)
 	table->dinner_over_sem = start_semaphore("/dinner_over_sem", 1);
 	table->someone_died_sem = start_semaphore("/someone_died_sem", 0);
 	table->philo_is_full_sem = start_semaphore("/philo_is_full_sem", 0);
+	table->print_sem = start_semaphore("/print_sem", 1);
 	table->forks = start_semaphore("/forks", table->philo_count);
 	table->philo = malloc(sizeof(t_philo));
 	table->philo->id = 0;
