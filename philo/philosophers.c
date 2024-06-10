@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:18 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:15:45 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:55:05 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ void	think(t_philo *philo)
 	time_t	thinking_time;
 	t_table	*table;
 
-	safe_print_status(philo, THINKING);
 	table = philo->table;
+	if (is_dinner_over(table))
+		return ;
+	safe_print_status(philo, THINKING);
 	thinking_time = ((time_t)table->time_to_die - ((time_t)get_time_in_ms()
 				- (time_t)philo->last_meal_time)
 			- (time_t)philo->table->time_to_eat) / 2;
@@ -42,6 +44,8 @@ void	eat(t_philo *philo)
 	t_table	*table;
 
 	table = philo->table;
+	if (is_dinner_over(table))
+		return ;
 	grab_forks(philo);
 	safe_print_status(philo, EATING);
 	safe_set(&philo->philo_mutex, &philo->last_meal_time, get_time_in_ms());
@@ -81,6 +85,8 @@ void	rest(t_philo *philo)
 	t_table	*table;
 
 	table = philo->table;
+	if (is_dinner_over(table))
+		return ;
 	safe_print_status(philo, SLEEPING);
 	wakeup_time = get_time_in_ms() + table->time_to_sleep;
 	while (get_time_in_ms() < wakeup_time)

@@ -6,12 +6,14 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 18:21:39 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 17:05:31 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+// https://nafuka11.github.io/philosophers-visualizer/
 
 # include <pthread.h>
 # include <stdbool.h>
@@ -21,7 +23,7 @@
 # include <unistd.h>
 
 # ifndef DEBUG_MODE
-#  define DEBUG_MODE 1
+#  define DEBUG_MODE 0
 # endif
 # define DEFAULT_PAUSE 100
 # define MAX_PHILOS 200
@@ -50,6 +52,7 @@ struct s_table
 	size_t			dinner_start_time;
 	size_t			dinner_is_over;
 	pthread_mutex_t	table_mutex;
+	pthread_mutex_t	print_mutex;
 	t_fork			*forks;
 	t_philo			*philos;
 };
@@ -59,11 +62,11 @@ struct s_philo
 	size_t			id;
 	pthread_t		thread_id;
 	pthread_mutex_t	philo_mutex;
-	t_fork			*first_fork;
-	t_fork			*second_fork;
 	size_t			last_meal_time;
 	size_t			meals_eaten;
 	size_t			is_full;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
 	t_table			*table;
 };
 
