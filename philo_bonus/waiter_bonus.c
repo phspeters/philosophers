@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiter.c                                           :+:      :+:    :+:   */
+/*   waiter_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 20:12:06 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:12:32 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-// penser se crio um waiter dando wait num semaphore que indica o final do role
-// e que chamaria funcao de limpeza e exit
 void	assign_waiter(t_philo *philo)
 {
 	pthread_t	waiter;
