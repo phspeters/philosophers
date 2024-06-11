@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:59:48 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 17:04:23 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:37:10 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	print_debug(t_philo *philo, t_status status)
 	else if (status == EATING)
 		printf(GRN "%zu %zu is eating for the [%zu] time" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id,
-			philo->meals_eaten);
+			philo->meals_eaten + 1);
 	else if (status == SLEEPING)
 		printf(YEL "%zu %zu is sleeping" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);

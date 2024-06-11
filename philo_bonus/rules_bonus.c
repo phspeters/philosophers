@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:59:48 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 17:02:48 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:29:03 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@ void	print_debug(t_philo *philo, t_status status)
 		printf(BLU "%zu %zu has taken his second fork" RST "\n",
 			timestamp(philo->table->dinner_start_time), philo->id);
 	else if (status == PHILO_FULL)
-		printf(MAG "[%zu] is full" RST "\n", philo->id);
-	else if (status == EVERYONE_FULL)
-		printf(MAG "All philosophers are full" RST "\n");
+		printf(MAG "%zu [%zu] is full" RST "\n",
+			timestamp(philo->table->dinner_start_time), philo->id);
 }
 
 void	print_status(t_philo *philo, t_status status)

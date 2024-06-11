@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 17:05:25 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:31:43 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # ifndef DEBUG_MODE
 #  define DEBUG_MODE 0
 # endif
+
 # define MAX_PHILOS 200
 
 # define BLU "\033[0;34m"
@@ -82,7 +83,6 @@ enum				e_status
 	GRABBED_FIRST_FORK,
 	GRABBED_SECOND_FORK,
 	PHILO_FULL,
-	EVERYONE_FULL,
 };
 
 /*-------------invitations.c--------------*/
@@ -99,6 +99,7 @@ void	set_table(t_table *table, char **argv);
 size_t	string_to_size_t(const char *str);
 sem_t	*start_semaphore(char *name, size_t value);
 void	clean_the_table(t_table *table);
+size_t	is_dinner_over(t_table *table);
 
 /*-------------philosophers.c-------------*/
 
@@ -114,7 +115,7 @@ void	start_dinner(t_table *table);
 void	sit_philosophers(t_table *table);
 void	lone_diner(t_philo *philo, size_t counter);
 void	dinner_routine(t_philo *philo, size_t counter);
-size_t	is_dinner_over(t_table *table);
+void	end_dinner(t_table *table, t_status	status);
 
 /*----------------waiter.c----------------*/
 
@@ -123,7 +124,7 @@ void	*check_on_philosopher(void *data);
 
 /*-----------------host.c-----------------*/
 
-void	manage_waiters(t_table *table);
+void	manage_waiters_report(t_table *table);
 void	wait_for_dinner_to_end(t_table *table);
 void	*share_death_report(void *data);
 void	*share_fullness_report(void *data);

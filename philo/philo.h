@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 17:05:31 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:37:49 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 # ifndef DEBUG_MODE
 #  define DEBUG_MODE 0
 # endif
-# define DEFAULT_PAUSE 100
+
+# define DEFAULT_PAUSE 1000
 # define MAX_PHILOS 200
 
 # define BLU "\033[0;34m"

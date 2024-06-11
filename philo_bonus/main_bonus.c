@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:41:59 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 18:13:04 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:05:42 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv)
 	if (check_invitations_details(argc, argv))
 	{
 		set_table(&table, argv);
-		manage_waiters(&table);
+		manage_waiters_report(&table);
 		start_dinner(&table);
 		wait_for_dinner_to_end(&table);
 		clean_the_table(&table);

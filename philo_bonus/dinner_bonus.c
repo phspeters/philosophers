@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dinner.c                                           :+:      :+:    :+:   */
+/*   dinner_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/07 17:50:18 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:27:58 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,25 @@ void	dinner_routine(t_philo	*philo, size_t counter)
 	}
 }
 
-size_t	is_dinner_over(t_table *table)
+void	end_dinner(t_table *table, t_status	status)
 {
-	return (safe_get(table->dinner_over_sem, &table->is_dinner_over));
+	size_t	counter;
+
+	safe_set(table->dinner_over_sem, &table->is_dinner_over, true);
+	escort_philosophers(table);
+	if (status == PHILO_FULL)
+	{
+		sem_post(table->someone_died_sem);
+		if (DEBUG_MODE == true)
+			printf(MAG "All philosophers are full" RST "\n");
+	}
+	if (status == DEAD)
+	{
+		counter = 0;
+		while (counter < table->philo_count)
+		{
+			sem_post(table->philo_is_full_sem);
+			counter++;
+		}
+	}
 }

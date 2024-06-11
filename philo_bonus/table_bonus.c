@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 16:56:14 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:25:00 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,9 @@ void	clean_the_table(t_table *table)
 	free(table->philo);
 	free(table->pids);
 	free(table->reports);
+}
+
+size_t	is_dinner_over(t_table *table)
+{
+	return (safe_get(table->dinner_over_sem, &table->is_dinner_over));
 }

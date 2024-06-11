@@ -6,13 +6,13 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:58:44 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/10 16:58:13 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:25:50 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	manage_waiters(t_table *table)
+void	manage_waiters_report(t_table *table)
 {
 	pthread_t	*death_report;
 	pthread_t	*fullness_report;
@@ -26,21 +26,11 @@ void	manage_waiters(t_table *table)
 void	*share_death_report(void *data)
 {
 	t_table	*table;
-	size_t	counter;
 
 	table = (t_table *)data;
-	counter = 0;
 	sem_wait(table->someone_died_sem);
 	if (!is_dinner_over(table))
-	{
-		safe_set(table->dinner_over_sem, &table->is_dinner_over, true);
-		escort_philosophers(table);
-		while (counter < table->philo_count)
-		{
-			sem_post(table->philo_is_full_sem);
-			counter++;
-		}
-	}
+		end_dinner(table, DEAD);
 	return (NULL);
 }
 
@@ -59,12 +49,7 @@ void	*share_fullness_report(void *data)
 			break ;
 	}
 	if (!is_dinner_over(table))
-	{
-		safe_print_status(table->philo, EVERYONE_FULL);
-		safe_set(table->dinner_over_sem, &table->is_dinner_over, true);
-		escort_philosophers(table);
-		sem_post(table->someone_died_sem);
-	}
+		end_dinner(table, PHILO_FULL);
 	return (NULL);
 }
 
