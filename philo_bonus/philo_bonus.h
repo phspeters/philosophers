@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/11 16:31:43 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:35:55 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ struct s_table
 	size_t			meals_to_fullfil;
 	size_t			dinner_start_time;
 	size_t			is_dinner_over;
-	sem_t			*dinner_over_sem;
+	sem_t			*check_dinner_over_sem;
 	sem_t			*someone_died_sem;
 	sem_t			*philo_is_full_sem;
+	sem_t			*philo_pids_sem;
 	sem_t			*print_sem;
 	sem_t			*forks;
 	t_philo			*philo;

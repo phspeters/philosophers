@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:07:05 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/11 16:25:00 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:34:02 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	set_table(t_table *table, char **argv)
 		table->meals_to_fullfil = string_to_size_t(argv[5]);
 	else
 		table->meals_to_fullfil = -1;
-	table->dinner_over_sem = start_semaphore("/dinner_over_sem", 1);
+	table->check_dinner_over_sem = start_semaphore("/check_dinner_over_sem", 1);
+	table->philo_pids_sem = start_semaphore("/philo_pids_sem", 1);
 	table->someone_died_sem = start_semaphore("/someone_died_sem", 0);
 	table->philo_is_full_sem = start_semaphore("/philo_is_full_sem", 0);
 	table->print_sem = start_semaphore("/print_sem", 1);
@@ -61,9 +62,11 @@ sem_t	*start_semaphore(char *name, size_t value)
 
 void	clean_the_table(t_table *table)
 {
-	sem_close(table->dinner_over_sem);
+	sem_close(table->check_dinner_over_sem);
+	sem_close(table->philo_pids_sem);
 	sem_close(table->someone_died_sem);
 	sem_close(table->philo_is_full_sem);
+	sem_close(table->print_sem);
 	sem_close(table->forks);
 	free(table->philo);
 	free(table->pids);
@@ -72,5 +75,5 @@ void	clean_the_table(t_table *table)
 
 size_t	is_dinner_over(t_table *table)
 {
-	return (safe_get(table->dinner_over_sem, &table->is_dinner_over));
+	return (safe_get(table->check_dinner_over_sem, &table->is_dinner_over));
 }

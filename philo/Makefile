@@ -6,7 +6,7 @@
 #    By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/28 19:11:03 by pehenri2          #+#    #+#              #
-#    Updated: 2024/06/07 18:24:43 by pehenri2         ###   ########.fr        #
+#    Updated: 2024/06/20 17:36:20 by pehenri2         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,7 +65,7 @@ hel: all
 		--tool=helgrind \
 		--history-level=none \
 		-s \
-		./$(NAME) 5 1800 200 200 5
+		./$(NAME) 5 10000 200 200 5
 #       --log-file=helgrind-out.txt \
 
 drd: all

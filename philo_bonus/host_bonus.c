@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 17:58:44 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/11 16:25:50 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:35:55 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,13 @@ void	escort_philosophers(t_table *table)
 	size_t	pos;
 
 	pos = 0;
+	sem_wait(table->philo_pids_sem);
 	while (pos < table->philo_count)
 	{
 		kill(table->pids[pos], SIGKILL);
 		pos++;
 	}
+	sem_post(table->philo_pids_sem);
 }
 
 void	wait_for_dinner_to_end(t_table *table)

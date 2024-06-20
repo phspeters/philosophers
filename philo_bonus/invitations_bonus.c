@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:03:26 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/11 16:40:19 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:51:49 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ bool	check_invitations_details(int argc, char **argv)
 	}
 	if (!within_philo_limit(argv[1]))
 		return (false);
+	if (argc == 6 && string_to_size_t(argv[5]) == 0)
+		exit(0);
 	return (true);
 }
 
@@ -39,7 +41,7 @@ bool	is_valid_argument_number(int argc)
 		printf("Error: Correct usage: ./philo 'number_of_philosophers'\
  'time_to_die' 'time_to_eat' 'time_to_sleep' [number_of_times_each_\
  philosopher_must_eat]\n-> Times are in milliseconds and the last\
-  argument is optional\n");
+ argument is optional\n");
 		return (false);
 	}
 	return (true);
@@ -67,16 +69,17 @@ bool	is_valid_range(char *argv)
 	counter = 0;
 	while (argv[counter])
 		counter++;
-	if (counter > 10)
-		return (false);
-	else if (counter == 10)
+	if (counter >= 10)
 	{
-		counter = 0;
-		while (argv[counter] && "2147483647"[counter])
+		if (counter == 10)
 		{
-			if (argv[counter] > "2147483647"[counter])
-				break ;
-			counter++;
+			counter = 0;
+			while (argv[counter] && "2147483647"[counter])
+			{
+				if (argv[counter] > "2147483647"[counter])
+					break ;
+				counter++;
+			}
 		}
 		if (counter != 10)
 		{
