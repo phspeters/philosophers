@@ -6,7 +6,7 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 21:10:41 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/20 17:17:09 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:23:23 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 void	start_dinner(t_table *table)
 {
-	if (table->meals_to_fullfil == 0)
-		return ;
-	else
-		sit_philosophers(table);
+	table->dinner_start_time = get_time_in_ms();
+	table->philo->last_meal_time = table->dinner_start_time;
+	sit_philosophers(table);
 }
 
 void	sit_philosophers(t_table *table)
@@ -25,8 +24,6 @@ void	sit_philosophers(t_table *table)
 	size_t	philo_counter;
 
 	philo_counter = 0;
-	table->dinner_start_time = get_time_in_ms();
-	table->philo->last_meal_time = table->dinner_start_time;
 	sem_wait(table->philo_pids_sem);
 	if (table->philo_count == 1)
 	{

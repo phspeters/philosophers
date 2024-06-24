@@ -6,14 +6,12 @@
 /*   By: pehenri2 <pehenri2@student.42sp.org.br     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:56:37 by pehenri2          #+#    #+#             */
-/*   Updated: 2024/06/11 16:37:49 by pehenri2         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:20:29 by pehenri2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
-// https://nafuka11.github.io/philosophers-visualizer/
 
 # include <pthread.h>
 # include <stdbool.h>
