@@ -62,7 +62,7 @@ The specific rules for the bonus part are:
 
 ## 📋 Testing
 
-To compile, go to the project path and run:
+To compile, navigate to the project directory and run:
 
 ```shell
 $ make 
@@ -71,7 +71,8 @@ $ make
 Then, execute the program with the following arguments:
 
 ```shell
-$ ./philo [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep]
+$ ./philo [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] *
 
 * optional and last parameter: [number_of_times_each_philosopher_must_eat]
+** times are in milliseconds (ms)
 ```
